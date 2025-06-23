@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package rfcontrol;
+
+// The service definition.
+service RFControl {
+  // Sets RF configuration and returns the device status.
+  rpc SetRFSettings(RFConfig) returns (RFResponse) {}
+}
+
+// The request message containing the RF configuration.
+message RFConfig {
+  double frequency = 1; // e.g., in MHz
+  double gain = 2;      // e.g., in dB
+  string device_id = 3;
+}
+
+// The response message containing the result.
+message RFResponse {
+  bool success = 1;
+  string device_status = 2;
+}
