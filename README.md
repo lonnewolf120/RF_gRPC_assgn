@@ -3,7 +3,7 @@
 This project implements a client-server system to control a simulated RF device using gRPC, demonstrating essential RF configuration capabilities. It includes a gRPC service definition, server and client implementations, a mocked RF API, unit/system tests, and Dockerization for easy deployment.
 
 Logs:
-[Log_and_UI.png](https://github.com/lonnewolf120/RF_gRPC_assgn/blob/master/Log_and_UI.png?raw=true)
+![Log_and_UI.png](https://github.com/lonnewolf120/RF_gRPC_assgn/blob/master/Log_and_UI.png?raw=true)
 
 ## Table of Contents
 
@@ -23,7 +23,7 @@ Logs:
 ## System Architecture
 
 The system follows a client-server model, with communication facilitated by gRPC.
-[system_architecture](https://github.com/lonnewolf120/RF_gRPC_assgn/blob/master/system_architecture.png?raw=true)
+![system_architecture](https://github.com/lonnewolf120/RF_gRPC_assgn/blob/master/system_architecture.png?raw=true)
 
 **Explanation of Components:**
 *   **Client CLI:** A command-line interface for users to input RF settings.
