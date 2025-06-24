@@ -6,6 +6,8 @@ package rfcontrol;
 service RFControl {
   // Sets RF configuration and returns the device status.
   rpc SetRFSettings(RFConfig) returns (RFResponse) {}
+  // Gets the current status of the RF device.
+  rpc GetDeviceStatus(DeviceStatusRequest) returns (RFResponse) {}
 }
 
 // The request message containing the RF configuration.
@@ -13,6 +15,11 @@ message RFConfig {
   double frequency = 1; // e.g., in MHz
   double gain = 2;      // e.g., in dB
   string device_id = 3;
+}
+
+// The request message for getting device status.
+message DeviceStatusRequest {
+  string device_id = 1; // The ID of the device to query.
 }
 
 // The response message containing the result.

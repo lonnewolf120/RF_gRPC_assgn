@@ -42,6 +42,17 @@ class RFControlServicer(rfcontrol_pb2_grpc.RFControlServicer):
 
         return rfcontrol_pb2.RFResponse(success=success, device_status=status)
 
+    def GetDeviceStatus(self, request, context):
+        """Handles the GetDeviceStatus RPC."""
+        logging.info(f"Received GetDeviceStatus request for DeviceID='{request.device_id}'")
+        
+        # In a real scenario, you might query the device for its status
+        # For simulation, we just return the current internal status
+        status = self.device.status
+        success = True # Assume always successful for status query
+
+        return rfcontrol_pb2.RFResponse(success=success, device_status=status)
+
 def serve():
     """Starts the gRPC server."""
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))

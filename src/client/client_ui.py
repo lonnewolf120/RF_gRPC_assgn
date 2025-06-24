@@ -49,9 +49,15 @@ class RFControlUI(tk.Tk):
 
         input_frame.columnconfigure(1, weight=1)
 
-        # Control Button
-        self.set_button = ttk.Button(self, text="Set RF Settings", command=self.set_rf_settings)
-        self.set_button.pack(pady=5)
+        # Control Buttons
+        button_frame = ttk.Frame(self)
+        button_frame.pack(pady=5)
+
+        self.set_button = ttk.Button(button_frame, text="Set RF Settings", command=self.set_rf_settings)
+        self.set_button.pack(side="left", padx=5)
+
+        self.get_status_button = ttk.Button(button_frame, text="Get Device Status", command=self.get_device_status)
+        self.get_status_button.pack(side="left", padx=5)
 
         # Response Frame
         response_frame = ttk.LabelFrame(self, text="Server Response", padding="10")
@@ -86,6 +92,19 @@ class RFControlUI(tk.Tk):
             args=(frequency, gain, device_id, server_addr)
         ).start()
 
+    def get_device_status(self):
+        self.status_label.config(text="Getting device status...")
+        self.get_status_button.config(state="disabled")
+        self.clear_response_text()
+
+        device_id = self.id_entry.get()
+        server_addr = self.server_entry.get()
+
+        threading.Thread(
+            target=self._get_status_grpc_request,
+            args=(device_id, server_addr)
+        ).start()
+
     def _send_grpc_request(self, frequency, gain, device_id, server_addr):
         try:
             with grpc.insecure_channel(server_addr) as channel:
@@ -102,6 +121,23 @@ class RFControlUI(tk.Tk):
             self.after(0, self.display_error, f"An unexpected error occurred: {e}")
         finally:
             self.after(0, lambda: self.set_button.config(state="normal"))
+            self.after(0, lambda: self.get_status_button.config(state="normal"))
+
+    def _get_status_grpc_request(self, device_id, server_addr):
+        try:
+            with grpc.insecure_channel(server_addr) as channel:
+                stub = rfcontrol_pb2_grpc.RFControlStub(channel)
+                response = stub.GetDeviceStatus(
+                    rfcontrol_pb2.DeviceStatusRequest(device_id=device_id)
+                )
+                self.after(0, self.display_response, response.success, response.device_status)
+        except grpc.RpcError as e:
+            self.after(0, self.display_error, f"RPC failed: {e.code()} - {e.details()}")
+        except Exception as e:
+            self.after(0, self.display_error, f"An unexpected error occurred: {e}")
+        finally:
+            self.after(0, lambda: self.set_button.config(state="normal"))
+            self.after(0, lambda: self.get_status_button.config(state="normal"))
 
     def display_response(self, success, status):
         self.response_text.config(state="normal")

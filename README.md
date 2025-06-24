@@ -220,6 +220,14 @@ Since physical RF hardware is not available, the project includes a `SimulatedRF
 
 This mocking strategy allows for full development and testing of the gRPC communication and RF control logic without requiring actual hardware.
 
+### Interactive Feature: Device Status Query
+
+An interactive feature has been added to the system, allowing the client to query the current status of the simulated RF device.
+
+-   **New RPC:** A `GetDeviceStatus` RPC has been added to the `rfcontrol.proto` service definition.
+-   **Server Implementation:** The `RFControlServicer` on the server side now handles `GetDeviceStatus` requests, returning the current status from the `SimulatedRFDevice`.
+-   **UI Client Integration:** The `client_ui.py` application now includes a "Get Device Status" button. Clicking this button sends a `GetDeviceStatus` request to the server and displays the returned status in the UI. This allows for real-time monitoring of the simulated device's state.
+
 ## Deliverables
 
 The project structure and content align with the assignment requirements:

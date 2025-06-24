@@ -40,6 +40,11 @@ class RFControlStub(object):
                 request_serializer=rfcontrol__pb2.RFConfig.SerializeToString,
                 response_deserializer=rfcontrol__pb2.RFResponse.FromString,
                 _registered_method=True)
+        self.GetDeviceStatus = channel.unary_unary(
+                '/rfcontrol.RFControl/GetDeviceStatus',
+                request_serializer=rfcontrol__pb2.DeviceStatusRequest.SerializeToString,
+                response_deserializer=rfcontrol__pb2.RFResponse.FromString,
+                _registered_method=True)
 
 
 class RFControlServicer(object):
@@ -53,12 +58,24 @@ class RFControlServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def GetDeviceStatus(self, request, context):
+        """Gets the current status of the RF device.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_RFControlServicer_to_server(servicer, server):
     rpc_method_handlers = {
             'SetRFSettings': grpc.unary_unary_rpc_method_handler(
                     servicer.SetRFSettings,
                     request_deserializer=rfcontrol__pb2.RFConfig.FromString,
+                    response_serializer=rfcontrol__pb2.RFResponse.SerializeToString,
+            ),
+            'GetDeviceStatus': grpc.unary_unary_rpc_method_handler(
+                    servicer.GetDeviceStatus,
+                    request_deserializer=rfcontrol__pb2.DeviceStatusRequest.FromString,
                     response_serializer=rfcontrol__pb2.RFResponse.SerializeToString,
             ),
     }
@@ -89,6 +106,33 @@ class RFControl(object):
             target,
             '/rfcontrol.RFControl/SetRFSettings',
             rfcontrol__pb2.RFConfig.SerializeToString,
+            rfcontrol__pb2.RFResponse.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def GetDeviceStatus(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/rfcontrol.RFControl/GetDeviceStatus',
+            rfcontrol__pb2.DeviceStatusRequest.SerializeToString,
             rfcontrol__pb2.RFResponse.FromString,
             options,
             channel_credentials,
