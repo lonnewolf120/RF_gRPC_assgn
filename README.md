@@ -2,6 +2,9 @@
 
 This project implements a client-server system to control a simulated RF device using gRPC, demonstrating essential RF configuration capabilities. It includes a gRPC service definition, server and client implementations, a mocked RF API, unit/system tests, and Dockerization for easy deployment.
 
+Logs:
+[Logs](Log_and_UI.png)
+
 ## Table of Contents
 
 - [System Architecture](#system-architecture)
@@ -20,37 +23,7 @@ This project implements a client-server system to control a simulated RF device 
 ## System Architecture
 
 The system follows a client-server model, with communication facilitated by gRPC.
-
-```mermaid
-componentDiagram
-  title System Architecture Diagram
-
-  package "Client Side" {
-    [Client CLI]
-    [gRPC Stub]
-
-    [Client CLI] --> [gRPC Stub] : Makes RPC Call
-  }
-
-  package "Server Side" {
-    [gRPC Server]
-    [RF Control Service]
-    [Simulated RF API]
-
-    [gRPC Server] --> [RF Control Service] : Forwards Request
-    [RF Control Service] --> [Simulated RF API] : Invokes Hardware Call
-  }
-
-  package "Containerization" {
-      [Docker Container: Client]
-      [Docker Container: Server]
-
-      [Client CLI] -- [Docker Container: Client]
-      [gRPC Server] -- [Docker Container: Server]
-  }
-
-  [gRPC Stub] ..> [gRPC Server] : gRPC Communication (over network)
-```
+[system_architecture](system_architecture.png)
 
 **Explanation of Components:**
 *   **Client CLI:** A command-line interface for users to input RF settings.
