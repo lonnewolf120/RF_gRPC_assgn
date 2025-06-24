@@ -72,7 +72,8 @@ componentDiagram
 ├── src/
 │   ├── client/
 │   │   ├── __init__.py
-│   │   └── client.py
+│   │   ├── client.py       # CLI client
+│   │   └── client_ui.py    # UI client (new)
 │   ├── proto/
 │   │   └── rfcontrol.proto
 │   ├── server/
@@ -126,7 +127,28 @@ componentDiagram
 
 ### Running Natively (Python)
 
-1.  **Start the gRPC Server:**
+1.  **Run Server and Client (Single Command):**
+    You can run both the server and a client (CLI or UI) with a single command.
+
+    **For CLI Client:**
+    ```bash
+    # Ensure your virtual environment is activated
+    python run_all.py --client-type cli --freq 915.0 --gain 20.0 --id DEV001
+    ```
+    You can modify the `--freq`, `--gain`, and `--id` parameters as needed. The server will start in the background, and the CLI client will execute its request.
+
+    **For UI Client (Optional Enhancement):**
+    ```bash
+    # Ensure your virtual environment is activated
+    python run_all.py --client-type ui
+    ```
+    This will start the server in the background and then launch the Tkinter UI.
+
+    *Note: The UI client is designed to run natively and is not included in the Docker Compose setup due to the complexities of running graphical applications within Docker containers.*
+
+2.  **Run Components Separately (Advanced/Debugging):**
+
+    **Start the gRPC Server:**
     Open a new terminal and run:
     ```bash
     # Ensure your virtual environment is activated
@@ -134,7 +156,7 @@ componentDiagram
     ```
     The server will start and listen on `localhost:50051`. You should see log messages indicating device connection and status.
 
-2.  **Run the gRPC Client:**
+    **Run the gRPC CLI Client:**
     Open another terminal and run:
     ```bash
     # Ensure your virtual environment is activated
@@ -146,6 +168,14 @@ componentDiagram
     ```bash
     python -m src.client.client --freq 868.5 --gain 18.0 --id MY_RF_DEVICE
     ```
+
+    **Run the gRPC UI Client (Optional Enhancement):**
+    Open another terminal and run:
+    ```bash
+    # Ensure your virtual environment is activated
+    python -m src.client.client_ui
+    ```
+    This will launch a simple Tkinter GUI. You can enter the RF parameters and click "Set RF Settings" to send the gRPC request. The server response will be displayed in the UI.
 
 ### Running with Docker Compose
 
@@ -197,6 +227,7 @@ The project structure and content align with the assignment requirements:
 -   `src/proto/rfcontrol.proto`: Defines the gRPC service and messages.
 -   `src/server/server.py`: Implements the gRPC server and integrates with the `SimulatedRFDevice`.
 -   `src/client/client.py`: Provides a CLI client to set RF parameters and display server responses.
+-   `src/client/client_ui.py`: Provides a UI client for setting RF parameters (optional enhancement).
 -   `README.md`: This document, providing clear instructions, explanations, and architecture details.
 -   `Dockerfile.server` & `Dockerfile.client`: Dockerfiles for containerizing the server and client.
 -   `docker-compose.yml`: Orchestrates the Docker containers for easy setup and execution.

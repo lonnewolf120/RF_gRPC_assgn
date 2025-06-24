@@ -46,7 +46,7 @@ def serve():
     """Starts the gRPC server."""
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
     rfcontrol_pb2_grpc.add_RFControlServicer_to_server(RFControlServicer(), server)
-    server.add_insecure_port('[::]:50051')
+    server.add_insecure_port('0.0.0.0:50051')
     server.start()
     logging.info("Server started on port 50051.")
     try:
