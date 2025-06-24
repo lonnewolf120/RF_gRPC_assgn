@@ -7,7 +7,7 @@ from concurrent import futures
 import rfcontrol_pb2
 import rfcontrol_pb2_grpc
 
-from rf_device import SimulatedRFDevice
+from server.rf_device import SimulatedRFDevice
 
 logging.basicConfig(level=logging.INFO)
 

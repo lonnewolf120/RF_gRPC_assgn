@@ -1,0 +1,26 @@
+version: '3.8'
+
+services:
+  server:
+    build:
+      context: .
+      dockerfile: Dockerfile.server
+    ports:
+      - "50051:50051"
+    networks:
+      - rf_control_net
+
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    depends_on:
+      - server
+    networks:
+      - rf_control_net
+    # We need to modify the client to connect to 'server:50051'
+    # This will be done in the client.py file.
+
+networks:
+  rf_control_net:
+    driver: bridge

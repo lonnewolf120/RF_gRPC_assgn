@@ -1,0 +1,19 @@
+# Use an official Python runtime as a parent image
+FROM python:3.9-slim
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the requirements file and install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the application source code
+COPY src/ .
+
+# Generate gRPC code
+RUN python -m grpc_tools.protoc -I./proto --python_out=. --grpc_python_out=. ./proto/rfcontrol.proto
+
+# Define the command to run the application
+# The client will connect to the 'server' hostname, which will be resolved by Docker Compose
+CMD ["python", "-m", "client.client", "--server", "server:50051", "--freq", "101.1", "--gain", "25.5", "--id", "DOCKER_TEST"]

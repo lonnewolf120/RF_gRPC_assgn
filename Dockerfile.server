@@ -1,0 +1,21 @@
+# Use an official Python runtime as a parent image
+FROM python:3.9-slim
+
+# Set the working directory in the container
+WORKDIR /app
+
+# Copy the requirements file and install dependencies
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+# Copy the rest of the application source code
+COPY src/ .
+
+# Generate gRPC code
+RUN python -m grpc_tools.protoc -I./proto --python_out=. --grpc_python_out=. ./proto/rfcontrol.proto
+
+# Expose the port the app runs on
+EXPOSE 50051
+
+# Define the command to run the application
+CMD ["python", "-m", "server.server"]
