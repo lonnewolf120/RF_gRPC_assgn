@@ -1,0 +1,30 @@
+@startuml
+!theme plain
+title System Architecture Diagram
+
+package "Client Side" {
+  [Client CLI]
+  [gRPC Stub]
+
+  [Client CLI] --> [gRPC Stub] : Makes RPC Call
+}
+
+package "Server Side" {
+  [gRPC Server]
+  [RF Control Service]
+  [Simulated RF API]
+
+  [gRPC Server] --> [RF Control Service] : Forwards Request
+  [RF Control Service] --> [Simulated RF API] : Invokes Hardware Call
+}
+
+package "Containerization" {
+    [Docker Container: Client]
+    [Docker Container: Server]
+
+    [Client CLI] -- [Docker Container: Client]
+    [gRPC Server] -- [Docker Container: Server]
+}
+
+[gRPC Stub] ..> [gRPC Server] : gRPC Communication (over network)
+@enduml
