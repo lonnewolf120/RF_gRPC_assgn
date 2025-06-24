@@ -1,26 +1,26 @@
 @startuml
-!theme plain
+!theme mars
 title System Architecture Diagram
 
-package "Client Side" {
-  [Client CLI]
-  [gRPC Stub]
+package "Client Side" #LightBlue {
+  [Client CLI] #LightCyan
+  [gRPC Stub] #LightGreen
 
   [Client CLI] --> [gRPC Stub] : Makes RPC Call
 }
 
-package "Server Side" {
-  [gRPC Server]
-  [RF Control Service]
-  [Simulated RF API]
+package "Server Side" #LightCoral {
+  [gRPC Server] #LightSalmon
+  [RF Control Service] #LightPink
+  [Simulated RF API] #LightGoldenRodYellow
 
   [gRPC Server] --> [RF Control Service] : Forwards Request
   [RF Control Service] --> [Simulated RF API] : Invokes Hardware Call
 }
 
-package "Containerization" {
-    [Docker Container: Client]
-    [Docker Container: Server]
+package "Containerization" #LightGray {
+    [Docker Container: Client] #White
+    [Docker Container: Server] #White
 
     [Client CLI] -- [Docker Container: Client]
     [gRPC Server] -- [Docker Container: Server]
